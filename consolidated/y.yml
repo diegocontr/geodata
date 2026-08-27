@@ -1,0 +1,98 @@
+schema_version: 1
+tariff_version: "2026-01"
+
+coverages:
+  - OwnDamage
+  - TPLM
+  - TPLB
+  - Glass
+
+addrisk_modules:
+
+  young_main_driver:
+    type: segment
+    description: Young main driver adjustment
+    rule_selection: first_match
+
+    rules:
+      - id: main_driver_age_lt_21
+        when: "main_driver_age < 21"
+        coefficients:
+          OwnDamage: 1.45
+          TPLM: 1.30
+          TPLB: 1.20
+          Glass: 1.05
+
+      - id: main_driver_age_21_to_24
+        when: "main_driver_age < 25"
+        coefficients:
+          OwnDamage: 1.20
+          TPLM: 1.10
+          TPLB: 1.05
+          Glass: 1.00
+
+
+  young_additional_driver:
+    type: segment
+    description: Young additional driver adjustment
+    rule_selection: first_match
+
+    rules:
+      - id: additional_driver_age_lt_21
+        when: "youngest_additional_driver_age < 21"
+        coefficients:
+          OwnDamage: 1.30
+          TPLM: 1.20
+          TPLB: 1.15
+          Glass: 1.05
+
+      - id: additional_driver_age_21_to_24
+        when: "youngest_additional_driver_age < 25"
+        coefficients:
+          OwnDamage: 1.15
+          TPLM: 1.08
+          TPLB: 1.03
+          Glass: 1.00
+
+
+  marseille_area:
+    type: segment
+    description: Geographic adjustment for risks located in Marseille
+    rule_selection: first_match
+
+    rules:
+      - id: marseille
+        when: "garage_city == 'Marseille'"
+        coefficients:
+          OwnDamage: 1.25
+          TPLM: 1.10
+          TPLB: 1.05
+          Glass: 1.15
+
+
+  senior_main_driver_age:
+    type: proportional
+    description: Continuous senior-driver adjustment after age 65
+    when: "main_driver_age > 65"
+    variable: main_driver_age
+    function: exponential
+    reference_value: 65
+    unit: 1
+
+    input_bounds:
+      min: 18
+      max: 100
+
+    factor_bounds:
+      min: 1.00
+      max: 2.00
+
+    parameters:
+      OwnDamage:
+        beta: 0.020
+      TPLM:
+        beta: 0.012
+      TPLB:
+        beta: 0.010
+      Glass:
+        beta: 0.008
