@@ -1,0 +1,30 @@
+{
+  "source": "Copernicus Climate Data Store",
+  "source_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-monthly-means",
+  "dataset": "reanalysis-era5-land-monthly-means",
+  "licence": "CC-BY 4.0",
+  "raw_archive": "data/01_ingestion/04_meteo/raw/era5_land_monthly_2021_2025.grib",
+  "annual_output_file": "data/02_standardization/meteo_commune_annuel.parquet",
+  "output_file": "data/02_standardization/meteo_commune.parquet",
+  "annual_rows": 177610,
+  "rows": 35522,
+  "communes": 35522,
+  "recent_years": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "key_annual": [
+    "commune_insee",
+    "year"
+  ],
+  "key_average": [
+    "commune_insee"
+  ],
+  "spatial_assignment": "Nearest ERA5-Land 0.1-degree grid cell to commune centroid.",
+  "aggregation": "Annual features calculated from monthly means; average table is calculated from complete annual records.",
+  "precipitation_conversion": "Monthly average daily accumulations converted from m/day to mm/month before annual summation.",
+  "missing_values": "Communes outside the downloaded area and incomplete commune-years are excluded; no imputation is performed."
+}
